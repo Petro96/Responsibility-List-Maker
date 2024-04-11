@@ -1,0 +1,102 @@
+<style>
+    .modal-content {
+      background-color: #212121;
+      color: azure;
+      
+    }
+  </style>
+  
+  <!-- Update  -->
+  <div class="modal fade" id="Modal-MoreInfo-{{ note.id }}" > 
+       tabindex="-1"
+       aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+
+          <h5 class="modal-title" id="ModalLabel">
+            <!-- title -->
+            {{ note.data }}
+          </h5>
+
+          <button type="button" class="close"
+                  data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!-- description -->
+        <div class="modal-body">
+          <!-- input  form-submit -->
+          <form action="" method="POST" class="form-signin">
+            <!-- hidden tag -->
+            {{update_task.hidden_tag()}}
+            <h4 class="text-center">Update your  {{note.data}} task  ?</h4>
+            <br>
+            {{ update_task.updated_data.label() }}
+            {{ update_task.updated_data(class="form-control", placeholder="New Task") }}
+            <!-- <label for="updated_note">Update Task</label>
+            <input class="form-control" type="text" placeholder="New Note"> -->
+            <br>
+            <h6 class="text-center">By Clicking the Update, you will update this task!</h6>
+            <br>
+            <!-- catch item that user want to buy -->
+            <input type="hidden" name="updated_note" value="{{note.data}}" id="updated_note">
+            <!-- submit flask form  -->
+            {{ update_task.submit(class="btn btn-outline-primary btn-block") }}
+            
+            <br>
+          </form>
+          
+          
+        </div>
+
+        <div class="modal-footer">
+          
+          
+          <button type="button" class="btn btn-secondary"
+                  data-dismiss="modal">Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- finished tasks -->
+  <div class="modal fade" id="Modal-DoneInfo-{{ note.id }}" > <!-- id that conntect us with market purchusing button -->
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+ <div class="modal-dialog">
+   <div class="modal-content">
+     <div class="modal-header">
+
+       <h5 class="modal-title" id="ModalLabel">
+         <!-- title -->
+         {{ note.data }}
+       </h5>
+
+       <button type="button" class="close"
+               data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+       </button>
+     </div>
+     <!-- description -->
+     <div class="modal-body">
+       <!-- input  form-submit -->
+       <h4>Are you sure that you've done this task?</h4>
+       <form action="" method="POST">
+          {{finished_task.hidden_tag()}}
+          <input type="hidden" name="done_note" value="{{note.data}}" id="done_note">
+          {{ finished_task.submit(class="btn btn-outline-success btn-block") }}
+       </form>
+       
+     </div>
+
+     <div class="modal-footer">
+       <button type="button" class="btn btn-secondary"
+               data-dismiss="modal">Close
+       </button>
+     </div>
+   </div>
+ </div>
+</div>

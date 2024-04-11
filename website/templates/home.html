@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}
+Home page
+{% endblock %}
+{% block content %}
+<div class="container">
+   <div class="row">
+      <div class="col-8">
+         <h1 style="text-align: center;">Tasks</h1>
+         <ul class="list-group list-group-flush" id="notes">
+            {% for note in user.notes %}
+            {% include 'includes/update_modal.html' %}
+           
+            <li class="list-group-item">
+               <span style="font-weight: bold;">
+               {{note.data}}
+               </span> 
+               {{note.date}}
+               <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{note.id}}">Update</button>
+               <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-DoneInfo-{{note.id}}">Done</button>
+               <button type="button" class="close" onclick="deleteNote({{note.id}})">
+               <span aria-hidden="true" >&times;</span>
+               </button>
+            </li>
+            {% endfor %}
+         </ul>
+         <form action="" method="POST" class="form-signin">
+            {{create_task.hidden_tag()}}
+            {{ create_task.note(class="form-control", placeholder="Add Task") }}
+            <br>
+            {{create_task.submit(class="btn btn-primary btn-lg btn-block")}}
+         </form>
+      </div>
+      <div class="col-4">
+        <h1 style="text-align: center;">Finished Tasks</h1>
+        <ul>
+            <li>Task that is done!</li>
+            {% for task in tasks %}
+                {{task}}
+            {% endfor %}
+            <p>done:</p>
+            {% for done in done_tasks %}
+                {{done}}
+            {% endfor %}
+        </ul>
+
+      </div>
+   </div>
+</div>
+{% endblock %}
