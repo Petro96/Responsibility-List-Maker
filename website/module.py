@@ -24,30 +24,18 @@ class User(db.Model, UserMixin):
             return False
 
 
-    @property
-    def password_hash(self):
-        return self.password
-    
-    """ @property.setter
-    def password_hash(self,password_to_hash):
-
-        self.password = bcrypt.generate_password_hash(password_to_hash).decode('utf-8')
-
-
-    def check_password_correction(self,password_to_check):
-        return bcrypt.check_password_hash(self.password, password_to_check)
- """
+    def __str__(self):
+        return f"UserName: {self.first_name}"
 
 
 class Note(db.Model):
 
-    is_done = ""
-
+    
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     data = db.Column(db.String(50))
     date = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id')) # owner of notes
-    #done = db.Column(db.Boolean, default=False)
+    done = db.Column(db.Boolean, default=False)
     
     def set_update(self, new_task):
         self.data = new_task
@@ -55,13 +43,15 @@ class Note(db.Model):
 
     @property
     def get_is_done(self):
-        return self.is_done
+        return self.done
 
     @get_is_done.setter    
     def set_is_done(self, done):
-        self.is_done = done
+        self.done = done
+        db.session.commit()
+
 
     def __str__(self) -> str:
-        return f"{self.id} - {self.data} - {self.user_id} = {self.is_done}"
+        return f"{self.id} - {self.data}  "
 
     
