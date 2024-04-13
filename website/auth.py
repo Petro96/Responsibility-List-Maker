@@ -63,7 +63,7 @@ def sign_up():
         if user:
             flash("User with this email already exist.",category="error")
 
-        # validation example 
+        # validation  
         elif len(email) < 4:
             flash('Email must be greater than three characters!', category="error")
         elif len(firstName) < 2:

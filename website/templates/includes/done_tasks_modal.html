@@ -1,0 +1,43 @@
+
+  <!-- Selling Confirm -->
+  <div class="modal fade" id="Modal-BackToTask-{{ done_task.id }}"
+       tabindex="-1"
+       aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">
+            <!-- title  -->
+            {{ done_task.data }}
+          </h5>
+          <button type="button" class="close"
+                  data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!-- description -->
+        <div class="modal-body">
+          
+          <form action="" method="POST">
+            {{back_to_task.hidden_tag()}}
+
+            <h4 class="text-center">Are you shure that you want to push this task in you Responsibilities list?</h4>
+            <br>
+            <h6 class="text-center">By clicking Back to the Tasks you will return task to your list!  </h6>
+            <br>
+            <!-- catch item that you want to put back to task list -->
+            <input type="hidden" name="done_task" value="{{done_task.data}}" id="done_task">
+            
+            {{back_to_task.submit(class="btn btn-outline-danger btn-block")}}
+            <br>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+                  data-dismiss="modal">Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

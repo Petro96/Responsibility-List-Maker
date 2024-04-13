@@ -1,10 +1,10 @@
 
 from flask import Blueprint, jsonify, render_template,request, flash, get_flashed_messages
 from flask_login import login_user, logout_user, login_required, current_user 
-from .module import Note
+from .module import Note, User
 from . import db
 import json
-from .form import UpdateNotes,CreateNotes, FinishedNotes
+from .form import UpdateNotes,CreateNotes, FinishedNotes, BackToTask
 
 
 
@@ -24,6 +24,7 @@ def home(): #notes
     create_task = CreateNotes()
     update_task = UpdateNotes()
     finished_task = FinishedNotes()
+    back_to_task = BackToTask()
 
     if request.method == "POST":
 
@@ -36,6 +37,7 @@ def home(): #notes
 
             if update_object:
                 # if current_user.can_update(update_task)
+                # user owne this note ?
                 new_value = update_task.updated_data.data
                 update_object.set_update(new_value)
                 flash("Task was updated!",category="success")
@@ -57,29 +59,53 @@ def home(): #notes
         # task is done 
         if finished_task.validate_on_submit():
 
-            done_data = request.form.get('done_note')
+            done_data = request.form.get('done_note') # gives note.data
 
             done_object = Note.query.filter_by(data=done_data).first()
 
             if done_object:
+                # are user owne this note ?
+                done_object.set_is_done=True
+                
+                flash("Congratulations! You've done this task.",category='success')
 
-                done = "True"
-                done_object.set_is_done=done
-                print("Object variable: "+done_object.is_done)
+            
+        # finished task back to the task
+        if  back_to_task.validate_on_submit():
 
-        
-    """ if create_task.errors != {} :
+            done_task = request.form.get('done_task')
 
-            for err_msg in create_task.errors.values():
+            done_task_object = Note.query.filter_by(data=done_task).first()
 
-                flash(f'Theres were an error adding task! {err_msg}', category='danger') """
-    tasks = Note.query.filter_by(is_done="False")
+            if done_task_object:
 
-    done_tasks = Note.query.filter_by(is_done="True")
-    print(tasks)
-    print(done_tasks)
+                # is user owne this task?
 
-    return render_template("home.html",user=current_user, create_task=create_task ,update_task=update_task, finished_task=finished_task, tasks=tasks, done_tasks=done_tasks)
+                done_task_object.set_is_done=False
+
+                flash("You return your task back to Responsibilities list!",category='success')
+            
+            
+
+    # filtering data
+
+    # if request.method== 'GET':
+    tasks = Note.query.filter_by(done=False)
+
+    # check if tasks len is 0 : flash message
+
+    done_tasks = Note.query.filter_by(done=True)
+
+    # check if done_tasks len is 0 : flash message
+
+    return render_template("home.html",
+                           user=current_user, 
+                           create_task=create_task ,
+                           update_task=update_task, 
+                           finished_task=finished_task,
+                           tasks=tasks, #return list
+                           done_tasks=done_tasks, #return list
+                           back_to_task=back_to_task)
 
 
 

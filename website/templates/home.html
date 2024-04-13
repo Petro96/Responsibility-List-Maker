@@ -8,14 +8,14 @@ Home page
       <div class="col-8">
          <h1 style="text-align: center;">Tasks</h1>
          <ul class="list-group list-group-flush" id="notes">
-            {% for note in user.notes %}
+            {% for note in tasks %} <!-- for note in tasks -->
             {% include 'includes/update_modal.html' %}
-           
             <li class="list-group-item">
                <span style="font-weight: bold;">
                {{note.data}}
                </span> 
                {{note.date}}
+               {{note.done}}
                <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{note.id}}">Update</button>
                <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-DoneInfo-{{note.id}}">Done</button>
                <button type="button" class="close" onclick="deleteNote({{note.id}})">
@@ -26,25 +26,38 @@ Home page
          </ul>
          <form action="" method="POST" class="form-signin">
             {{create_task.hidden_tag()}}
-            {{ create_task.note(class="form-control", placeholder="Add Task") }}
+            {{ create_task.note(class="form-control shadow p-3 mb-5 bg-white rounded", placeholder="Add Task") }}
             <br>
             {{create_task.submit(class="btn btn-primary btn-lg btn-block")}}
          </form>
       </div>
       <div class="col-4">
-        <h1 style="text-align: center;">Finished Tasks</h1>
-        <ul>
-            <li>Task that is done!</li>
-            {% for task in tasks %}
-                {{task}}
+         <h2 style="text-align: center;">Finished Tasks</h2>
+         <br>
+         <div class="row">
+            <!-- display done tasks current_user -->
+            {% for done_task in done_tasks %}
+            {% include 'includes/done_tasks_modal.html' %}
+            <div class="col-md-6">
+               <div style="margin-bottom: 5px" class="card text-center bg-dark">
+                  <div class="card-body">
+                     <h5 class="card-title" id="was_done">{{ done_task.data }}</h5>
+                     <button type="button" class="btn btn-outline-danger" style="margin-bottom: 5px"
+                        data-toggle="modal" data-target="#Modal-BackToTask-{{ done_task.id }}">
+                     Back to Task List
+                     </button>
+                     <p class="card-text"><strong>
+                        This task was done!
+                        </strong>
+                     </p>
+                  </div>
+               </div>
+            </div>
             {% endfor %}
-            <p>done:</p>
-            {% for done in done_tasks %}
-                {{done}}
-            {% endfor %}
-        </ul>
-
+         </div>
       </div>
    </div>
+</div>
+</div>
 </div>
 {% endblock %}

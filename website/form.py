@@ -19,3 +19,8 @@ class UpdateNotes(FlaskForm):
 class FinishedNotes(FlaskForm):
 
     submit = SubmitField(label="Its Done")
+
+
+class BackToTask(FlaskForm):
+
+    submit = SubmitField(label="Back to the Tasks")

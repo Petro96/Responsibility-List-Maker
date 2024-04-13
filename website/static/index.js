@@ -26,3 +26,7 @@ function deleteNote(note_id){
     .then(res => window.location.href = "/") // home page refresh
          
 }
+
+// done task check box
+
+
