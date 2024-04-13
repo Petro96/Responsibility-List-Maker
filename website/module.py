@@ -16,7 +16,7 @@ class User(db.Model, UserMixin):
     notes = db.relationship('Note', backref='notes_owner', lazy=True) # relate with Notes object
 
 
-    def can_update(self, task_object):
+    def can_modify(self, task_object):
         # return task_objcet in self.notes 
         if task_object.user_id == self.id:
             return True

@@ -6,7 +6,7 @@ Home page
 <div class="container">
    <div class="row">
       <div class="col-8">
-         <h1 style="text-align: center;">Tasks</h1>
+         <h1 class="h1" style="text-align: center;">Tasks</h1>
          <ul class="list-group list-group-flush" id="notes">
             {% for note in tasks %} <!-- for note in tasks -->
             {% include 'includes/update_modal.html' %}
@@ -15,10 +15,10 @@ Home page
                {{note.data}}
                </span> 
                {{note.date}}
-               {{note.done}}
+               
                <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{note.id}}">Update</button>
                <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-DoneInfo-{{note.id}}">Done</button>
-               <button type="button" class="close" onclick="deleteNote({{note.id}})">
+               <button type="button" class="close" onclick="deleteNote({{note.id}})" data-toggle="tooltip" data-placement="bottom" title="Delete">
                <span aria-hidden="true" >&times;</span>
                </button>
             </li>
@@ -32,7 +32,11 @@ Home page
          </form>
       </div>
       <div class="col-4">
-         <h2 style="text-align: center;">Finished Tasks</h2>
+         <h2 class="h2" style="text-align: center;">
+            Finished Tasks
+            <br>
+            <small class="text-muted">that you've been done</small>
+         </h2>
          <br>
          <div class="row">
             <!-- display done tasks current_user -->

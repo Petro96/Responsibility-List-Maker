@@ -17,3 +17,7 @@
   #was_done{
     text-decoration: line-through;
   }
+
+  small{
+    color: rgb(215, 250, 251);
+  }

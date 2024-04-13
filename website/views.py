@@ -19,7 +19,7 @@ def index_page():
 
 @views.route('/', methods=['GET','POST'])
 @login_required
-def home(): #notes
+def home(): #notes home page
 
     create_task = CreateNotes()
     update_task = UpdateNotes()
@@ -36,11 +36,12 @@ def home(): #notes
             update_object = Note.query.filter_by(data=data_for_update).first()
 
             if update_object:
-                # if current_user.can_update(update_task)
-                # user owne this note ?
-                new_value = update_task.updated_data.data
-                update_object.set_update(new_value)
-                flash("Task was updated!",category="success")
+                
+                # user owne this note 
+                if current_user.can_modify(update_object):
+                    new_value = update_task.updated_data.data
+                    update_object.set_update(new_value)
+                    flash("Task was updated!",category="success")
 
             else:
                 flash("Theres no Task like that in database!",category="error")
@@ -55,8 +56,10 @@ def home(): #notes
             db.session.add(new_note)
             db.session.commit()
             flash("Note added!", category='success')
+
         # ---
         # task is done 
+
         if finished_task.validate_on_submit():
 
             done_data = request.form.get('done_note') # gives note.data
@@ -64,12 +67,16 @@ def home(): #notes
             done_object = Note.query.filter_by(data=done_data).first()
 
             if done_object:
-                # are user owne this note ?
-                done_object.set_is_done=True
-                
-                flash("Congratulations! You've done this task.",category='success')
+                # user owne this note 
+                if current_user.can_modify(done_object):
 
-            
+                    done_object.set_is_done=True
+                
+                    flash("Congratulations! You've done this task.",category='success')
+                else:
+                    flash("Owner doesn't own the object. Object doesn't exists!",category='error')    
+
+
         # finished task back to the task
         if  back_to_task.validate_on_submit():
 
@@ -79,33 +86,38 @@ def home(): #notes
 
             if done_task_object:
 
-                # is user owne this task?
+                #is user owne this task
+                if current_user.can_modify(done_task_object):
 
-                done_task_object.set_is_done=False
+                    done_task_object.set_is_done=False
 
-                flash("You return your task back to Responsibilities list!",category='success')
-            
+                    flash("You return your task back to Responsibilities list!",category='success')
+                else:
+                    flash("Owner doesn't own the object. Object doesn't exists!",category='error')
             
 
     # filtering data
 
-    # if request.method== 'GET':
     tasks = Note.query.filter_by(done=False)
 
-    # check if tasks len is 0 : flash message
+    if tasks.count() < 1 :
+
+        flash("Congratulations! You've done all tasks!",category='success') 
 
     done_tasks = Note.query.filter_by(done=True)
 
-    # check if done_tasks len is 0 : flash message
+    if done_tasks.count() < 1:
+
+        flash("You didn't start to do your tasks! Let's get started!",category='warning')
 
     return render_template("home.html",
-                           user=current_user, 
-                           create_task=create_task ,
-                           update_task=update_task, 
-                           finished_task=finished_task,
-                           tasks=tasks, #return list
-                           done_tasks=done_tasks, #return list
-                           back_to_task=back_to_task)
+                            user=current_user, 
+                            create_task=create_task ,
+                            update_task=update_task, 
+                            finished_task=finished_task,
+                            tasks=tasks, #return list
+                            done_tasks=done_tasks, #return list
+                            back_to_task=back_to_task)
 
 
 
@@ -120,7 +132,7 @@ def delete_note():
     find_note = Note.query.get(note_id)
 
     if find_note:
-        if find_note.user_id == current_user.id:
+        if current_user.can_modify(find_note):
             db.session.delete(find_note)
             db.session.commit()
             flash("Note was deleted!", category='success')
