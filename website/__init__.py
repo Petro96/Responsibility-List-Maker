@@ -22,7 +22,7 @@ def create_app():
 
     app = Flask(__name__)
     # secret key for app - for encrypt config, session data for website 
-    app.config['SECRET_KEY'] = 'dfD5JkBAKOp0'
+    app.config['SECRET_KEY'] = 'generate secret_key'
 
     # db config
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
