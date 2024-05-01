@@ -37,15 +37,15 @@
                 <li class="nav-item">
                   <a class="nav-link" >Welcome, {{current_user.first_name}}</a>
                  </li>
-                <a class="nav-item nav-link" id="home" href="/welcome">Home</a>
-                <a class="nav-item nav-link" id="notes" href="/">Notes</a>
+                <a class="nav-item nav-link" id="home" href="{{url_for('views.index_page')}}">Home</a>
+                <a class="nav-item nav-link" id="notes" href="{{url_for('views.home')}}">Notes</a>
                 <div id="left-logout"> 
-                  <a class="nav-item nav-link" id="logout" href="/logout">Logout</a> 
+                  <a class="nav-item nav-link" id="logout" href="{{url_for('auth.logout')}}">Logout</a> 
                 </div>
               {% else %}
-               <a class="nav-item nav-link" id="login" href="/login">Login</a>
-               <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
-               <a class="nav-item nav-link" id="notes" href="/">Notes</a>
+               <a class="nav-item nav-link" id="login" href="{{url_for('auth.login')}}">Login</a>
+               <a class="nav-item nav-link" id="signUp" href="{{url_for('auth.sign_up')}}">Sign Up</a>
+               <a class="nav-item nav-link" id="notes" href="{{url_for('views.index_page')}}">Notes</a>
               {% endif%}
             </div>
         </div>

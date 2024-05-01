@@ -23,7 +23,7 @@ function deleteNote(note_id){
     fetch(request)
     .then(res => {return res.json()}) // res => console.log(res)
     .then(res => console.log(res))
-    .then(res => window.location.href = "/") // home page refresh
+    .then(res => window.location.href = "/welcome") // home page refresh
          
 }
 

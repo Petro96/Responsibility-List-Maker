@@ -1,5 +1,5 @@
 
-from flask import Blueprint, jsonify, render_template,request, flash, get_flashed_messages
+from flask import Blueprint, jsonify, render_template,request, flash, get_flashed_messages, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user 
 from .module import Note, User
 from . import db
@@ -12,12 +12,12 @@ views = Blueprint('views', __name__) # blueprint setUp for app-flask/ blueprint 
 
 
 
-@views.route('/welcome', methods=['GET','POST'])
+@views.route('/', methods=['GET','POST'])
 def index_page():
     return render_template('index.html',user=current_user)
 
 
-@views.route('/', methods=['GET','POST'])
+@views.route('/welcome', methods=['GET','POST'])
 @login_required
 def home(): #notes home page
 
@@ -143,5 +143,5 @@ def delete_note():
         else:
             flash("There was an error about deleting note!",category='error')
 
-
+        return redirect(url_for('views.home'))
 
