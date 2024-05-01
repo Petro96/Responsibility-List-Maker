@@ -143,5 +143,5 @@ def delete_note():
         else:
             flash("There was an error about deleting note!",category='error')
 
-        return redirect(url_for('views.home'))
+        
 
