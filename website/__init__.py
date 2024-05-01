@@ -12,20 +12,20 @@ from flask_migrate import Migrate
 
 from os import path
 
+from dotenv import load_dotenv
+
 
 # sglAlchemy(ORM) initialize
 db = SQLAlchemy()
-DB_NAME="database.db"
 
 
 def create_app():
 
     app = Flask(__name__)
     # secret key for app - for encrypt config, session data for website 
-    app.config['SECRET_KEY'] = 'generate secret_key'
-
     # db config
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config.from_object("config")
+   
     # init db for flask
     app.app_context().push()
     db.init_app(app)
@@ -61,7 +61,9 @@ def create_app():
 
 def create_database():
 
-    if not path.exists('website/'+ DB_NAME):
+    load_dotenv()
+
+    if not path.exists('website/'+os.environ.get('DB_NAME')):
         db.create_all()
         print("Created Database!")
 
