@@ -59,6 +59,8 @@ def create_app():
 
     return app
 
+# ----- create db
+
 def create_database():
 
     load_dotenv()
