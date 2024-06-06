@@ -1,5 +1,5 @@
 
-from . import db # . <=> from website import db - init package
+from extensions import db # . <=> from website import db - init package
 from flask_login import UserMixin
 from sqlalchemy.sql import func 
 from datetime import datetime
@@ -13,11 +13,11 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(30), unique=True, nullable=False)
     password = db.Column(db.String(30),nullable=False)
     first_name = db.Column(db.String(40), nullable=False)
-    notes = db.relationship('Note', backref='notes_owner', lazy=True) # relate with Notes object
+    notes = db.relationship('Note', backref='notes_owner', lazy=True) 
 
 
     def can_modify(self, task_object):
-        # return task_objcet in self.notes 
+        
         if task_object.user_id == self.id:
             return True
         else:

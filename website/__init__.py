@@ -4,19 +4,13 @@ from flask import Flask
 
 #from flask_bcrypt import Bcrypt # delete lib => werkzeug.security is used 
 
-from flask_sqlalchemy import SQLAlchemy
-
-from flask_login import LoginManager
-
-from flask_migrate import Migrate
+from extensions import db,ma, migrate, login_manager
 
 from os import path
 
 from dotenv import load_dotenv
 
-
-# sglAlchemy(ORM) initialize
-db = SQLAlchemy()
+from api.views import blueprint
 
 
 def create_app():
@@ -26,8 +20,9 @@ def create_app():
     # db config
     app.config.from_object("config")
    
-    # init db for flask
     app.app_context().push()
+
+    # init db for flask
     db.init_app(app)
 
     # register-init blueprint => .view <=>website -> module(package) / views -> blueprint
@@ -39,12 +34,11 @@ def create_app():
     app.register_blueprint(auth, url_prefix='/') # before you call url you must type /auth/..
 
     # creating database
-    from .module import User, Note
+    from .module import User
 
-    create_database()
+    # create_database()
 
     # login manager - login manipulation - user_loader, login_required
-    login_manager = LoginManager(app)
     login_manager.login_view = 'auth.login' # if you arent logged in where to go...
     login_manager.login_message_category = "info"
     login_manager.init_app(app)
@@ -54,7 +48,11 @@ def create_app():
         return User.query.get(int(id))
     
     # migration
-    migrate= Migrate(app,db)
+    migrate.init_app(app,db)
+
+    app.register_blueprint(blueprint=blueprint)
+
+    ma.init_app(app)
 
 
     return app
