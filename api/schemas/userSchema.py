@@ -1,6 +1,6 @@
 
 from marshmallow import validate, validates_schema ,ValidationError
-from marshmallow.fields import String, Email
+from marshmallow.fields import String
 from extensions import ma
 
 from website.module import User

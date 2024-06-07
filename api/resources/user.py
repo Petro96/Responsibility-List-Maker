@@ -4,6 +4,7 @@ from flask_restful import Resource
 from website.module import User
 from api.schemas.userSchema import UserSchema
 from extensions import db
+from marshmallow import ValidationError
 
 
 class UserList(Resource):
@@ -31,10 +32,13 @@ class UserResource(Resource):
 
         schema = UserSchema(partial=True)
 
-        user = schema.load(request.json, instance=user)
-
-        db.session.add(user)
-        db.session.commit()
+        try:
+            user = schema.load(request.json, instance=user)
+            db.session.add(user)
+            db.session.commit()
+            
+        except ValidationError as err:
+            return {"Error":err.messages}
 
         return {"msg":"User updated", "user":schema.dump(user)}
     
