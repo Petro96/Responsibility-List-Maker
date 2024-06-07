@@ -98,13 +98,13 @@ def home(): #notes home page
 
     # filtering data
 
-    tasks = Note.query.filter_by(done=False)
+    tasks = Note.query.filter_by(user_id=current_user.id,done=False) # user_id=current_user.id
 
     if tasks.count() < 1 :
 
         flash("Congratulations! You've done all tasks!",category='success') 
 
-    done_tasks = Note.query.filter_by(done=True)
+    done_tasks = Note.query.filter_by(user_id=current_user.id,done=True) 
 
     if done_tasks.count() < 1:
 
