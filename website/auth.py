@@ -15,8 +15,7 @@ auth = Blueprint('auth', __name__) # blueprint setUp
 
 @auth.route('/login',methods=['GET','POST'])
 def login():
-    # request.form => [('email','tim@gmail.com'),('password','123456')]
-    #data = request.form['email']
+    
 
     if request.method == "POST":
 
