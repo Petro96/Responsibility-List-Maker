@@ -1,4 +1,6 @@
 .env
-.venv
+.venv/
+venv/
 requirements.txt
-__pycache__
+__pycache__/
+*.pyc
